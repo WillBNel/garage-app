@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  nginx:
+    container_name: nginx
+    image: nginx:alpine 
+    ports:
+    - target: 80
+      published: 80 
+      protocol: tcp
+    volumes:
+    - type: bind
+      source: ./gateway/nginx.conf
+      target: /etc/nginx/nginx.conf
+  backend:
+    container_name: backend
+    image: garage-app-backend:latest 
+    build: ./backend
+    ports:
+    - target: 9002
+      published: 9002
+      frontend:
+    container_name: frontend
+    build: ./frontend
+    image: garage-app-frontend:latest
+    ports:
+    - target: 80
+      published: 8080  
